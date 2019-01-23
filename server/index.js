@@ -1,5 +1,7 @@
 const express = require('express');
 
+var db = require('../database/index')
+
 const getReposByUsername = require('../helpers/github').getReposByUsername;
 
 let app = express();
@@ -15,7 +17,11 @@ app.post('/repos', function (req, res) {
   var userName = req.body.name;
   getReposByUsername(userName)
    .then((result) => {
-     console.log(result);
+    db.save(result)
+    .then(() => {
+      res.end()
+    })
+    
    })
    .catch((e) => {
      console.log(e);
@@ -23,11 +29,20 @@ app.post('/repos', function (req, res) {
   
 });
 
-app.get('/repos', function (req, res) {
-  console.log('I have reached the server ====================',req.body)
+//-----------------------------------------------------------------------
+
+app.get('/top', function (req, res) {
   // TODO - your code here!
   // This route should send back the top 25 repos
-  res.send('hello')
+  //create function that get top 25 results within db module, bring it here and send back to user;
+  console.log("I'm getting now")
+  db.getTopResults()
+  .then((topResults) => {
+    res.send(topResults);
+  })
+  .catch((err) => {
+    console.log(err);
+  })
 });
 
 let port = 1128;
