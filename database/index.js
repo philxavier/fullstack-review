@@ -8,10 +8,7 @@ mongoose.connect('mongodb://127.0.0.1/fetcher', {
 });
 
 let repoSchema = new mongoose.Schema({
-  name: {
-    type: String
-    //unique:true
-  },
+  name: String,
   html_url: String,
   description: String,
   forks_count: Number,
@@ -20,6 +17,7 @@ let repoSchema = new mongoose.Schema({
 
 });
 
+repoSchema.index({"name": 1}, {unique: true});
 
 let Repo = mongoose.model('Repo', repoSchema);
 

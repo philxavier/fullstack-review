@@ -21,10 +21,9 @@ app.post('/repos', function (req, res) {
     .then(() => {
       res.end()
     })
-    
    })
-   .catch((e) => {
-     console.log(e);
+   .catch((err) => {
+     throw err;
    })
   
 });
